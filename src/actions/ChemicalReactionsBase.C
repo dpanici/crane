@@ -16,6 +16,7 @@
 
 #include <sstream>
 #include <stdexcept>
+#include <fstream>
 
 // libmesh includes
 #include "libmesh/libmesh.h"
@@ -690,6 +691,17 @@ ChemicalReactionsBase::ChemicalReactionsBase(InputParameters params)
       }
     }
   }
+// TEMPORARY: Print out stochiometric coefficient matrix to a txt file for use in PumpKin
+  std::ofstream out_put;
+  out_put.open("/home/dpanici/projects/crane/problems/qt_matrix.txt");
+  for (int i = 0; i<_stoichiometric_coeff[0].size();i++){
+  	for (int j = 0; j < _stoichiometric_coeff.size();j++){
+		out_put << _stoichiometric_coeff[j][i] << " ";// go through the first element of the ith column and print it to the txt file
+	}
+	out_put << std::endl;// make a new line for the next row of the matrix
+  }
+  out_put.close();
+  ////////////////////////////////////////
   _reaction_participants.resize(_num_reactions);
   _reaction_stoichiometric_coeff.resize(_num_reactions);
   // Now we find which index of _all_participants is associated with _species
