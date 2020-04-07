@@ -695,12 +695,30 @@ ChemicalReactionsBase::ChemicalReactionsBase(InputParameters params)
   std::ofstream out_put;
   out_put.open("/home/dpanici/projects/crane/problems/qt_matrix.txt");
   for (int i = 0; i<_stoichiometric_coeff[0].size();i++){
+	if ( _all_participants[i] != "NEUTRAL"){ 
   	for (int j = 0; j < _stoichiometric_coeff.size();j++){
-		out_put << _stoichiometric_coeff[j][i] << " ";// go through the first element of the ith column and print it to the txt file
+		if (_stoichiometric_coeff[j][i] >= 0){
+		out_put <<" " << _stoichiometric_coeff[j][i] << " ";
+		}// go through the first element of the ith column and print it to the txt file
+		else {
+
+		out_put << _stoichiometric_coeff[j][i] << " ";
+		}
 	}
+	
 	out_put << std::endl;// make a new line for the next row of the matrix
-  }
+       }
+   }
   out_put.close();
+
+  std::ofstream out_put2;
+  out_put2.open("/home/dpanici/projects/crane/problems/species_list.txt");
+  for (int i = 0; i<_stoichiometric_coeff[0].size();i++){
+	  if (_all_participants[i] != "NEUTRAL"){ 
+		out_put2 << i << " " <<  _all_participants[i] << std::endl;
+	  }		
+  }
+  out_put2.close();
   ////////////////////////////////////////
   _reaction_participants.resize(_num_reactions);
   _reaction_stoichiometric_coeff.resize(_num_reactions);
